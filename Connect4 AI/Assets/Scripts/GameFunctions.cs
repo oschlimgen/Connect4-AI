@@ -95,11 +95,31 @@ public class GameFunctions : MonoBehaviour
 					flag = false;
 				}
 			}
-			//Check for win
 			if (player == 1) {
 				newPlayer = 2;
 			} else {
 				newPlayer = 1;
+			}
+			if(checkWin(board, col, row, player)) {
+				Debug.Log("Player " + player.ToString() + " won!");
+				board = new int[9,8] {{3,3,3,3,3,3,3,3},{3,0,0,0,0,0,0,3},{3,0,0,0,0,0,0,3},{3,0,0,0,0,0,0,3},{3,0,0,0,0,0,0,3},{3,0,0,0,0,0,0,3},{3,0,0,0,0,0,0,3},{3,0,0,0,0,0,0,3 },{3,3,3,3,3,3,3,3}};
+				GameObject[] pieces = GameObject.FindGameObjectsWithTag("Piece");
+				for(int i = 0; i < pieces.Length; i++){
+					Destroy(pieces[i]);
+				}
+				newPlayer = 1;
+			} else {
+				if(row == 6) {
+					if(board[1,6] != 0 && board[2,6] != 0 && board[3,6] != 0 && board[4,6] != 0 && board[5,6] != 0 && board[6,6] != 0 && board[7,6] != 0) {
+						Debug.Log("The game was a tie.");
+						board = new int[9,8] {{3,3,3,3,3,3,3,3},{3,0,0,0,0,0,0,3},{3,0,0,0,0,0,0,3},{3,0,0,0,0,0,0,3},{3,0,0,0,0,0,0,3},{3,0,0,0,0,0,0,3},{3,0,0,0,0,0,0,3},{3,0,0,0,0,0,0,3 },{3,3,3,3,3,3,3,3}};
+						GameObject[] pieces = GameObject.FindGameObjectsWithTag("Piece");
+						for(int i = 0; i < pieces.Length; i++){
+							Destroy(pieces[i]);
+						}
+						newPlayer = 1;
+					}
+				}
 			}
 		} else {
 			newPlayer = player;
@@ -108,10 +128,7 @@ public class GameFunctions : MonoBehaviour
 	}
 
 
-	void Start()
-	{
-		
-	}
+	void Start() {}
 
 	void Update()
 	{
