@@ -1,20 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-
-public class FileReader : MonoBehaviour
+using System.Collections;
+using System;
+using System.IO;
+ 
+public class LineReader : MonoBehaviour
 {
-    float[,,] Weights;
-    string[] file = File.ReadAllText("../Files/Weights.txt");
-    // Start is called before the first frame update
-    void Start()
-    {     
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+    protected FileInfo theSourceFile = null;
+    protected StreamReader reader = null;
+    protected string text = " "; // assigned to allow first line to be read below
+    float[,] NeuralNetwork;  
+    void Start () {
+        int layernum = -1;
+        int count = 0;
         
+        theSourceFile = new FileInfo ("../Weights/Weights.txt");
+        reader = theSourceFile.OpenText();
+        while(text != null){
+            text = reader.ReadLine();
+            if(text == "NewLayer"){
+                layernum++;
+                count = 0;
+            }else{
+                string[] tempstringarray = text.Split(',');
+                float[] temparray = tempstringarray.Select(x => float.Parse(x));
+                NeuralNetwork[layernum,count] = temparray;
+                count++;
+            }
+            
+        }
+    }
+   
+    void Update () {
     }
 }
