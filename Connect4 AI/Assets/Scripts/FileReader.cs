@@ -32,8 +32,9 @@ public class FileReader : MonoBehaviour
             } else if(text == "End") {
                 flag = false;
             }else{
-
-                String[] tempstringarray = text.Split(',');
+                String[] tempstringarray;
+                tempstringarray = text.Split(',');
+                Debug.Log(count);
                 NeuralNetwork[layernum].Add(new List<decimal>());
                 //decimal[] temparray = tempstringarray.Select(x => decimal.Parse(x));
                 for(int i = 0; i < tempstringarray.Length; i++){
@@ -43,13 +44,16 @@ public class FileReader : MonoBehaviour
             }
             
         }
+        Debug.Log("finished");
         for (int i = 0; i < NeuralNetwork.Count; i++)
         {
+
             for (int j = 0; j <NeuralNetwork[i].Count; j++)
             {
                 for (int k = 0; k < NeuralNetwork[i][j].Count; k++)
                 {
                     decimal s = NeuralNetwork[i][j][k];
+                    Debug.Log(s);
                 }
             }
         }
