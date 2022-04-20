@@ -3,51 +3,57 @@ using System.Collections;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Globalization;
+
  
 public class FileReader : MonoBehaviour
 {
     protected FileInfo theSourceFile = null;
     protected StreamReader reader = null;
     protected string text = " "; // assigned to allow first line to be read below
-    List<List<List<float>>> NeuralNetwork = new List<List<List<float>>>();  
+    List<List<List<decimal>>> NeuralNetwork = new List<List<List<decimal>>>();  
     void Start () {
         int layernum = -1;
         int count = 0;
-        Debug.Log('a');
+
         theSourceFile = new FileInfo ("../Connect4 AI/Assets/Weights/Weights.txt");
         reader = theSourceFile.OpenText();
-        while(text != null){
-            Debug.Log('b');
+        CultureInfo provider = new CultureInfo("en-US");
+
+        bool flag = true;
+        while(flag){
+
             text = reader.ReadLine();
             if(text == "NewLayer"){
-                Debug.Log('c');
+
+                NeuralNetwork.Add(new List<List<decimal>>());
                 layernum++;
                 count = 0;
+            } else if(text == "End") {
+                flag = false;
             }else{
-                Debug.Log('d');
-                string[] tempstringarray = text.Split(',');
-                //float[] temparray = tempstringarray.Select(x => float.Parse(x));
+
+                String[] tempstringarray = text.Split(',');
+                NeuralNetwork[layernum].Add(new List<decimal>());
+                //decimal[] temparray = tempstringarray.Select(x => decimal.Parse(x));
                 for(int i = 0; i < tempstringarray.Length; i++){
-
-                    NeuralNetwork[layernum,count,i] = float.Parse(tempstringarray[i]);
+                    NeuralNetwork[layernum][count].Add(decimal.Parse(tempstringarray[i], NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint, provider));
                 }
-
                 count++;
             }
             
         }
-        for (int i = 0; i < NeuralNetwork.GetLength(0); i++)
+        for (int i = 0; i < NeuralNetwork.Count; i++)
         {
-            for (int j = 0; j <NeuralNetwork.GetLength(1); j++)
+            for (int j = 0; j <NeuralNetwork[i].Count; j++)
             {
-                for (int k = 0; k < NeuralNetwork.GetLength(2); k++)
+                for (int k = 0; k < NeuralNetwork[i][j].Count; k++)
                 {
-                    float s = NeuralNetwork[i, j, k ];
-                    Debug.Log(s);
+                    decimal s = NeuralNetwork[i][j][k];
                 }
             }
         }
-        Debug.Log('e');
+
     }
     void Update () {
     }
